@@ -10,7 +10,7 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 ## Prerequisites
 
 - Python 3.x
-- Node.js and npm
+- npm
 - Git
 
 ## Setup and Installation
