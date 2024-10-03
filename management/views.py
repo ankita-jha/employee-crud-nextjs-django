@@ -1,39 +1,54 @@
-from django.shortcuts import render, get_object_or_404, redirect
+from rest_framework import status
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.response import Response
+from rest_framework.permissions import AllowAny
+from django.shortcuts import get_object_or_404
 from .models import Employee, Department
-from .forms import EmployeeForm, DepartmentForm
+from .serializers import EmployeeSerializer, DepartmentSerializer
 
-# List of employees
+@api_view(['GET'])
+@permission_classes([AllowAny])
 def employee_list(request):
+    # Retrieve all employees and serialize them
     employees = Employee.objects.all()
-    return render(request, 'management/employee_list.html', {'employees': employees})
+    serializer = EmployeeSerializer(employees, many=True)
+    return Response(serializer.data)
 
-# Create a new employee
+@api_view(['POST'])
+@permission_classes([AllowAny])
 def employee_create(request):
-    if request.method == 'POST':
-        form = EmployeeForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('employee_list')
-    else:
-        form = EmployeeForm()
-    return render(request, 'management/employee_form.html', {'form': form})
+    # Create a new employee
+    serializer = EmployeeSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-# Edit employee
-def employee_edit(request, id):
+@api_view(['GET', 'PUT', 'DELETE'])
+@permission_classes([AllowAny])
+def employee_detail(request, id):
+    # Retrieve, update or delete an employee
     employee = get_object_or_404(Employee, id=id)
-    if request.method == 'POST':
-        form = EmployeeForm(request.POST, instance=employee)
-        if form.is_valid():
-            form.save()
-            return redirect('employee_list')
-    else:
-        form = EmployeeForm(instance=employee)
-    return render(request, 'management/employee_form.html', {'form': form})
 
-# Delete employee
-def employee_delete(request, id):
-    employee = get_object_or_404(Employee, id=id)
-    if request.method == 'POST':
+    if request.method == 'GET':
+        serializer = EmployeeSerializer(employee)
+        return Response(serializer.data)
+
+    elif request.method == 'PUT':
+        serializer = EmployeeSerializer(employee, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    elif request.method == 'DELETE':
         employee.delete()
-        return redirect('employee_list')
-    return render(request, 'management/employee_confirm_delete.html', {'employee': employee})
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def department_list(request):
+    # Retrieve all departments and serialize them
+    departments = Department.objects.all()
+    serializer = DepartmentSerializer(departments, many=True)
+    return Response(serializer.data)
