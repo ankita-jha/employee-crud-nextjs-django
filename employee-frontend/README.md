@@ -1,36 +1,92 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
-## Getting Started
+### Employment Management CRUD App
 
-First, run the development server:
+## Project Structure
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- `employee_app/`: Django backend
+- `employee-frontend/`: Next.js frontend
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Prerequisites
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- Python 3.x
+- Node.js and npm
+- Git
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Setup and Installation
 
-## Learn More
+### Backend (Django)
 
-To learn more about Next.js, take a look at the following resources:
+1. Clone the repository:
+   ```
+   git clone <repository-url>
+   cd employee_app
+   ```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+2. Create and activate a virtual environment:
+   ```
+   python -m venv venv
+   source venv/bin/activate  # On Windows, use `venv\Scripts\activate`
+   ```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+3. Install dependencies:
+   ```
+   pip install -r requirements.txt
+   ```
 
-## Deploy on Vercel
+4. Apply migrations:
+   ```
+   python manage.py migrate
+   ```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+5. Run the Django development server:
+   ```
+   python manage.py runserver
+   ```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+The backend should now be running on `http://localhost:8000`.
+
+### Frontend (Next.js)
+
+1. Navigate to the frontend directory:
+   ```
+   cd employee-frontend
+   ```
+
+2. Install dependencies:
+   ```
+   npm install
+   ```
+
+3. Create a `.env.local` file in the `employee-frontend` directory with the following content:
+   ```
+   NEXT_PUBLIC_API_URL=http://localhost:8000
+   ```
+
+4. Run the Next.js development server:
+   ```
+   npm run dev
+   ```
+
+The frontend should now be accessible at `http://localhost:3000`.
+
+## Usage
+
+- Access the frontend application at `http://localhost:3000`
+- Use the interface to manage employees and departments
+- The backend API is available at `http://localhost:8000/api/`
+
+## API Endpoints
+
+- `GET /api/employees/`: List all employees
+- `POST /api/employees/create/`: Create a new employee
+- `GET /api/employees/<id>/`: Retrieve an employee
+- `PUT /api/employees/<id>/`: Update an employee
+- `DELETE /api/employees/<id>/`: Delete an employee
+- `GET /api/departments/`: List all departments
+
+## Technologies Used
+
+- Backend: Django, Django REST Framework
+- Frontend: Next.js, React, Tailwind CSS
+- Database: SQLite (default)
