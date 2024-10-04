@@ -7,10 +7,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'django-insecure-9_0c-x2nr@#$#oq6x7ri39xaa*q2+vardrw4qwlc4&#s9qdbk8')
 
 # Debug setting (read from environment variable)
-DEBUG = os.getenv('DJANGO_DEBUG', 'False') == 'True'
+DEBUG = False
 
 # Allowed hosts for production (read from environment variable)
-ALLOWED_HOSTS = os.getenv('DJANGO_ALLOWED_HOSTS', '*').split(',')
+ALLOWED_HOSTS = ['https://employee-crud-nextjs-django.onrender.com', 'localhost', '127.0.0.1']
 
 # Application definition
 INSTALLED_APPS = [
@@ -92,8 +92,8 @@ CORS_ALLOWED_ORIGINS = os.getenv('CORS_ALLOWED_ORIGINS', 'http://localhost:3000,
 # CSRF settings
 CSRF_COOKIE_SAMESITE = 'Lax'
 CSRF_COOKIE_HTTPONLY = False
-CSRF_TRUSTED_ORIGINS = os.environ.get('CSRF_TRUSTED_ORIGINS', '').split(',')
-CSRF_COOKIE_SECURE = os.getenv('DJANGO_SECURE', 'False') == 'True'
+CSRF_TRUSTED_ORIGINS = ['https://employee-crud-nextjs-django.onrender.com']
+CSRF_COOKIE_SECURE = True  # Set to True if using HTTPS
 
 # Django REST Framework settings
 REST_FRAMEWORK = {
